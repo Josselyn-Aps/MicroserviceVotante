@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <title>Formulario Videojuego</title>
+    </head>
+    <body>
+        <nav th:replace="components/navbar :: nav_bar"></nav>
+        <div class="container">
+
+            <div class="card">
+                <div class="card-body">
+                    <form th:object="${coalicion}" th:action="@{/productos/}" method="post">
+                        <div class="form-group">
+                            <label for="nombre">Nombre del producto</label>
+                            <input th:field="*{nombre}" id="nombre" placeholder="Escribe el nombre del producto" type="text"
+                                   class="form-control">
+                        </div>
+
+                        <button class="btn btn-success" type="submit">Guardar</button>
+                    </form>
+                </div>  
+            </div>
+        </div>
+    </div>
+</body>
+</html>
