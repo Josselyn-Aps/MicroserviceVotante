@@ -6,10 +6,13 @@
 package edu.mx.tecnm.oaxaca.microservice.votante.controller;
 
 import edu.mx.tecnm.oaxaca.microservice.votante.model.CredencialModel;
+import edu.mx.tecnm.oaxaca.microservice.votante.model.VotanteModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.CredencialService;
+import edu.mx.tecnm.oaxaca.microservice.votante.service.VotanteService;
 import edu.mx.tecnm.oaxaca.microservice.votante.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,19 +34,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class CredencialController {
      @Autowired
     private CredencialService credencialService;
-     
-     
-    @PostMapping("/credencial")
-    public CustomResponse registroCredencial(@RequestBody CredencialModel credencial) {
-        CustomResponse customResponse = new CustomResponse();
-            credencialService.registrarCredencial(credencial);
-            customResponse.setHttpCode(HttpStatus.CREATED);
-            customResponse.setCode(201);
-            customResponse.setMensaje("Success");
-        
-        return customResponse;
-    }
+       @Autowired
+    private VotanteService votanteService;
+
     
+     @PostMapping("/direccion/votante/registrar")
+    public ResponseEntity<Object> registroCredencial(@RequestBody CredencialModel credencialModel) {
+        CustomResponse customResponse = new CustomResponse();
+        try {
+            VotanteModel votanteModel = votanteService.getVotante(
+                    credencialModel.getVotanteModel().getCurp());
+            if (votanteModel == null) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                        new CustomResponse(HttpStatus.NO_CONTENT,"Not found direccion with id = "+ credencialModel.getVotanteModel().getCurp(), 204));
+            }
+
+            credencialModel.setVotanteModel(votanteModel);
+            credencialService.registrarCredencial(credencialModel);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            customResponse.setMensaje(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                    new CustomResponse(HttpStatus.NO_CONTENT,"CAN NOT PROCESS THE ENTITY: " + e, 422));
+        }
+    }
     
     
     
