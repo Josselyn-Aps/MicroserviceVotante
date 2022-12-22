@@ -36,8 +36,8 @@ public class CredencialController {
     private CredencialService credencialService;
        @Autowired
     private VotanteService votanteService;
-     
- @PostMapping("/direccion/votante/registrar")
+    
+     @PostMapping("/direccion/votante/registrar")
     public ResponseEntity<Object> registroCredencial(@RequestBody CredencialModel credencialModel) {
         CustomResponse customResponse = new CustomResponse();
         try {
@@ -57,7 +57,6 @@ public class CredencialController {
                     new CustomResponse(HttpStatus.NO_CONTENT,"CAN NOT PROCESS THE ENTITY: " + e, 422));
         }
     }
-    
     
     
       @GetMapping("/credencial")
