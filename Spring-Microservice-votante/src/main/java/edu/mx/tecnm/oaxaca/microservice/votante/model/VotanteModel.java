@@ -9,7 +9,7 @@ package edu.mx.tecnm.oaxaca.microservice.votante.model;
  *
  * @author macbookair
  */
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.Date;
 import javax.persistence.*;
 @Entity
@@ -28,6 +28,10 @@ public class VotanteModel {
     private String entidad;
     private String genero;
     
+    @OneToOne
+    @JoinColumn(name = "idEmisionVoto")
+    @JsonBackReference
+    private EmisionVotoModel emisionVotoModel;
     
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idDireccion")
@@ -39,7 +43,7 @@ public class VotanteModel {
     public VotanteModel() {
     }
 
-    public VotanteModel(String curp, String apellidoPVotante, String apellidoMVotante, String nombreVotante, String correoVotante, Integer telefonoVotante, Date fechaNacimiento, String entidad, String genero, DireccionModel direccionModel) {
+    public VotanteModel(String curp, String apellidoPVotante, String apellidoMVotante, String nombreVotante, String correoVotante, Integer telefonoVotante, Date fechaNacimiento, String entidad, String genero, DireccionModel direccionModel, EmisionVotoModel emisionVotoModel) {
         this.curp = curp;
         this.apellidoPVotante = apellidoPVotante;
         this.apellidoMVotante = apellidoMVotante;
@@ -50,6 +54,7 @@ public class VotanteModel {
         this.entidad = entidad;
         this.genero = genero;
         this.direccionModel = direccionModel;
+        this.emisionVotoModel= emisionVotoModel;
     }
 
     public String getCurp() {
@@ -132,10 +137,20 @@ public class VotanteModel {
         this.direccionModel = direccionModel;
     }
 
+    public EmisionVotoModel getEmisionVotoModel() {
+        return emisionVotoModel;
+    }
+
+    public void setEmisionVotoModel(EmisionVotoModel emisionVotoModel) {
+        this.emisionVotoModel = emisionVotoModel;
+    }
+
     @Override
     public String toString() {
-        return "VotanteModel{" + "curp=" + curp + ", apellidoPVotante=" + apellidoPVotante + ", apellidoMVotante=" + apellidoMVotante + ", nombreVotante=" + nombreVotante + ", correoVotante=" + correoVotante + ", telefonoVotante=" + telefonoVotante + ", fechaNacimiento=" + fechaNacimiento + ", entidad=" + entidad + ", genero=" + genero + ", direccionModel=" + direccionModel + '}';
+        return "VotanteModel{" + "curp=" + curp + ", apellidoPVotante=" + apellidoPVotante + ", apellidoMVotante=" + apellidoMVotante + ", nombreVotante=" + nombreVotante + ", correoVotante=" + correoVotante + ", telefonoVotante=" + telefonoVotante + ", fechaNacimiento=" + fechaNacimiento + ", entidad=" + entidad + ", genero=" + genero + ", emisionVotoModel=" + emisionVotoModel + ", direccionModel=" + direccionModel + '}';
     }
+
+   
 
    
 }

@@ -6,8 +6,10 @@
 package edu.mx.tecnm.oaxaca.microservice.votante.controller;
 
 import edu.mx.tecnm.oaxaca.microservice.votante.model.DireccionModel;
+import edu.mx.tecnm.oaxaca.microservice.votante.model.EmisionVotoModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.model.VotanteModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.DireccionService;
+import edu.mx.tecnm.oaxaca.microservice.votante.service.EmisionVotoService;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.VotanteService;
 import edu.mx.tecnm.oaxaca.microservice.votante.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,10 @@ public class VotanteController {
 
     @Autowired
     private DireccionService direccionService;
+    
+    @Autowired
+    private EmisionVotoService emisionVotoService;
+
 
     @PostMapping("/registrar")
     public ResponseEntity<Object> resgistrarVotante(@RequestBody VotanteModel votanteModel) {
@@ -45,12 +51,19 @@ public class VotanteController {
         try {
             DireccionModel direccionModel = direccionService.getDireccion(
                     votanteModel.getDireccionModel().getIdDireccion());
+            
+            EmisionVotoModel emisionVotoModel = emisionVotoService.getEmisionVoto(
+                    votanteModel.getEmisionVotoModel().getIdEmisionVoto());
             if (direccionModel == null) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
                         new CustomResponse(HttpStatus.NO_CONTENT, "Not found VOTANTE with id = " + votanteModel.getDireccionModel().getIdDireccion(), 204));
+            }else if(emisionVotoModel ==null){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found VOTANTE with id = " + votanteModel.getEmisionVotoModel().getIdEmisionVoto(), 204));
             }
 
             votanteModel.setDireccionModel(direccionModel);
+            votanteModel.setEmisionVotoModel(emisionVotoModel);
             votanteService.registrarVotantes(votanteModel);
             customResponse.setHttpCode(HttpStatus.CREATED);
             customResponse.setCode(201);

@@ -44,15 +44,7 @@ public class EmisionVotoController {
         ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
         try {
-             VotanteModel votanteModel = votanteService.getVotante(
-                    emisionVotoModel.getVotanteModel().getCurp());
-            if (votanteModel == null) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found direccion with id = " + emisionVotoModel.getVotanteModel().getCurp(), 204));
-            }
-            
-            emisionVotoModel.setVotanteModel(votanteModel);
-            emisionVotoService.registrarEmisionVoto(emisionVotoModel);
+           emisionVotoService.registrarEmisionVoto(emisionVotoModel);
             customResponse.setHttpCode(HttpStatus.CREATED);
             customResponse.setCode(201);
             customResponse.setMensaje("Success");

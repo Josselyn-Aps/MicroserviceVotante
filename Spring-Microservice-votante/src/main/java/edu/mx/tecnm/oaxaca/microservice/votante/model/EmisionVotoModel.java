@@ -31,18 +31,18 @@ public class EmisionVotoModel {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateTimeCreation;
 
-    @OneToOne
+    /*@OneToOne
     @JoinColumn(name = "curp")
     @JsonBackReference
-    private VotanteModel votanteModel;
+    private VotanteModel votanteModel;*/
     
     public EmisionVotoModel() {
     }
 
-    public EmisionVotoModel(String idEmisionVoto, Date dateTimeCreation, VotanteModel votanteModel) {
+    public EmisionVotoModel(String idEmisionVoto, Date dateTimeCreation) {
         this.idEmisionVoto = idEmisionVoto;
         this.dateTimeCreation = dateTimeCreation;
-        this.votanteModel = votanteModel;
+       // this.votanteModel = votanteModel;
     }
 
     public String getIdEmisionVoto() {
@@ -60,18 +60,18 @@ public class EmisionVotoModel {
     public void setDateTimeCreation(Date dateTimeCreation) {
         this.dateTimeCreation = dateTimeCreation;
     }
-
+/*
     public VotanteModel getVotanteModel() {
         return votanteModel;
     }
 
     public void setVotanteModel(VotanteModel votanteModel) {
         this.votanteModel = votanteModel;
-    }
+    }*/
 
     @Override
     public String toString() {
-        return "EmisionVotoModel{" + "idEmisionVoto=" + idEmisionVoto + ", dateTimeCreation=" + dateTimeCreation + ", votanteModel=" + votanteModel + '}';
+        return "EmisionVotoModel{" + "idEmisionVoto=" + idEmisionVoto + ", dateTimeCreation=" + dateTimeCreation +'}';
     }
 
     
