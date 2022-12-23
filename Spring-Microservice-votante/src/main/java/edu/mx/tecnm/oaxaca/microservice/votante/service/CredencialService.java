@@ -19,7 +19,7 @@ public interface CredencialService {
     public void registrarCredencial(CredencialModel credencial);
     public List getCredenciales();
     public CredencialModel getCredencial(String claveElector);
-    public void updateCredencial(CredencialModel credencialModel, String claveElecto);
-    public void deleteCredencial(String claveElecto);
+    public void updateCredencial(CredencialModel credencialModel, String claveElector);
+    public void deleteCredencial(String claveElector);
     public CredencialModel getCoalicionfindByClaveElector(String claveElector);
 }

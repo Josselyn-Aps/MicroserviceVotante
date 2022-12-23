@@ -101,14 +101,21 @@ public class CredencialController {
         return customResponse;
     }
 
+  
+     
     @DeleteMapping("/credencial/{claveElector}")
-    public CustomResponse deleteCredencial(@PathVariable String claveElector) {
+    public ResponseEntity<Object> deleteCredencial(@PathVariable String claveElector){
+        ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
-
-        credencialService.deleteCredencial(claveElector);
-        customResponse.setHttpCode(HttpStatus.OK);
-        customResponse.setCode(204);
-        customResponse.setMensaje(" delete Successful");
-        return customResponse;
+        try {
+            credencialService.deleteCredencial(claveElector);
+            customResponse.setHttpCode(HttpStatus.OK);
+            customResponse.setCode(200);
+            customResponse.setMensaje("Delete Success");
+            return ResponseEntity.status(HttpStatus.OK).body(customResponse);
+        } catch (Exception e) {
+            customResponse.setMensaje(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customResponse);
+        }
     }
 }

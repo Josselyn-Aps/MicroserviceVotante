@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,7 +78,7 @@ public class VotanteController {
     }
     
       @GetMapping("/votante/{curp}")
-    public CustomResponse getCredencial(@PathVariable String curp) {
+    public CustomResponse getVotante(@PathVariable String curp) {
         CustomResponse customResponse = new CustomResponse();
 
         customResponse.setData(votanteService.getVotante(curp));
@@ -88,5 +89,28 @@ public class VotanteController {
     }
   
 
+   
+    
+        @DeleteMapping("/delete/{curp}")
+    public ResponseEntity<Object> deleteEmisionVoto(@PathVariable String curp) {
+        ResponseEntity<Object> responseEntity = null;
+        CustomResponse customResponse = new CustomResponse();
+        try {
+            if (votanteService.getVotante(curp) == null) {
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new CustomResponse(HttpStatus.NO_CONTENT,
+                                "This acction can't execute, Not found votante with curp = " + curp, 204));
+            }
+            votanteService.deleteVotante(curp);
+            customResponse.setHttpCode(HttpStatus.OK);
+            customResponse.setCode(200);
+            customResponse.setMensaje("Delete Success");
+            return ResponseEntity.status(HttpStatus.OK).body(customResponse);
+        } catch (Exception e) {
+            customResponse.setMensaje(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customResponse);
+        }
+
+    }
   
 }
