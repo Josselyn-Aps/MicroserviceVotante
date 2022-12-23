@@ -32,77 +32,83 @@ import org.springframework.web.bind.annotation.RestController;
 //@RequestMapping(path = "/productos")
 @CrossOrigin(origins = "*")
 public class CredencialController {
+
     @Autowired
     private CredencialService credencialService;
-       @Autowired
+    @Autowired
     private VotanteService votanteService;
-    
-     @PostMapping("/direccion/votante/registrar")
+
+    @PostMapping("/direccion/votante/registrar")
     public ResponseEntity<Object> registroCredencial(@RequestBody CredencialModel credencialModel) {
-        CustomResponse customResponse = new CustomResponse();
+         ResponseEntity<Object> responseEntity = null;
+         CustomResponse customResponse = new CustomResponse();
         try {
             VotanteModel votanteModel = votanteService.getVotante(
                     credencialModel.getVotanteModel().getCurp());
             if (votanteModel == null) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT,"Not found direccion with id = "+ credencialModel.getVotanteModel().getCurp(), 204));
+                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found direccion with id = " + credencialModel.getVotanteModel().getCurp(), 204));
             }
 
             credencialModel.setVotanteModel(votanteModel);
             credencialService.registrarCredencial(credencialModel);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            customResponse.setHttpCode(HttpStatus.CREATED);
+            customResponse.setCode(201);
+            customResponse.setMensaje("Success");
+            customResponse.setData(credencialModel);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(customResponse);
+            
         } catch (Exception e) {
             customResponse.setMensaje(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                    new CustomResponse(HttpStatus.NO_CONTENT,"CAN NOT PROCESS THE ENTITY: " + e, 422));
+                    new CustomResponse(HttpStatus.NO_CONTENT, "CAN NOT PROCESS THE ENTITY: " + e, 422));
         }
+        return responseEntity;
     }
-    
-    
-      @GetMapping("/credencial")
+
+    @GetMapping("/credencial")
     public CustomResponse getCredenciales() {
         CustomResponse customResponse = new CustomResponse();
-     
-            customResponse.setData(credencialService.getCredenciales());
-            customResponse.setHttpCode(HttpStatus.OK);
-            customResponse.setCode(200);
-            customResponse.setMensaje("Todos los registros existentes:");
+
+        customResponse.setData(credencialService.getCredenciales());
+        customResponse.setHttpCode(HttpStatus.OK);
+        customResponse.setCode(200);
+        customResponse.setMensaje("Todos los registros existentes:");
 
         return customResponse;
     }
-    
-       
+
     @GetMapping("/credencial/{claveElector}")
     public CustomResponse getCredencial(@PathVariable String claveElector) {
         CustomResponse customResponse = new CustomResponse();
-        
-            customResponse.setData(credencialService.getCredencial(claveElector));
-            customResponse.setHttpCode(HttpStatus.OK);
-            customResponse.setCode(200);
-            customResponse.setMensaje("Exitoso: " + claveElector);
+
+        customResponse.setData(credencialService.getCredencial(claveElector));
+        customResponse.setHttpCode(HttpStatus.OK);
+        customResponse.setCode(200);
+        customResponse.setMensaje("Exitoso: " + claveElector);
         return customResponse;
     }
-    
-     @PutMapping("/credencial/{claveElector}")
+
+    @PutMapping("/credencial/{claveElector}")
     public CustomResponse updateCredencial(@RequestBody CredencialModel credencial, @PathVariable String claveElector) {
         CustomResponse customResponse = new CustomResponse();
 
-            credencialService.updateCredencial(credencial, claveElector);
-            customResponse.setHttpCode(HttpStatus.CREATED);
-            customResponse.setCode(201);
-            customResponse.setMensaje("Successful update");
+        credencialService.updateCredencial(credencial, claveElector);
+        customResponse.setHttpCode(HttpStatus.CREATED);
+        customResponse.setCode(201);
+        customResponse.setMensaje("Successful update");
 
         return customResponse;
     }
-    
-      @DeleteMapping("/credencial/{claveElector}")
+
+    @DeleteMapping("/credencial/{claveElector}")
     public CustomResponse deleteCredencial(@PathVariable String claveElector) {
         CustomResponse customResponse = new CustomResponse();
 
-            credencialService.deleteCredencial(claveElector);
-            customResponse.setHttpCode(HttpStatus.OK);
-            customResponse.setCode(204);
-            customResponse.setMensaje(" delete Successful");
+        credencialService.deleteCredencial(claveElector);
+        customResponse.setHttpCode(HttpStatus.OK);
+        customResponse.setCode(204);
+        customResponse.setMensaje(" delete Successful");
         return customResponse;
     }
 }

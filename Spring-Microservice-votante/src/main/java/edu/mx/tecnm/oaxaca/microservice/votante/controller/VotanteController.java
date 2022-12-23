@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,24 +37,56 @@ public class VotanteController {
     @Autowired
     private DireccionService direccionService;
 
-    @PostMapping("/direccion/votante/registrar")
+    @PostMapping("/registrar")
     public ResponseEntity<Object> resgistrarVotante(@RequestBody VotanteModel votanteModel) {
+        ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
         try {
             DireccionModel direccionModel = direccionService.getDireccion(
                     votanteModel.getDireccionModel().getIdDireccion());
             if (direccionModel == null) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT,"Not found direccion with id = "+ votanteModel.getDireccionModel().getIdDireccion(), 204));
+                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found VOTANTE with id = " + votanteModel.getDireccionModel().getIdDireccion(), 204));
             }
 
             votanteModel.setDireccionModel(direccionModel);
             votanteService.registrarVotantes(votanteModel);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            customResponse.setHttpCode(HttpStatus.CREATED);
+            customResponse.setCode(201);
+            customResponse.setMensaje("Success");
+            customResponse.setData(votanteModel);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(customResponse);
         } catch (Exception e) {
             customResponse.setMensaje(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                    new CustomResponse(HttpStatus.NO_CONTENT,"CAN NOT PROCESS THE ENTITY: " + e, 422));
+                    new CustomResponse(HttpStatus.NO_CONTENT, "CAN NOT PROCESS THE ENTITY: " + e, 422));
         }
+        return responseEntity;
     }
+    
+      @GetMapping("/all")
+    public CustomResponse getVotantes() {
+        CustomResponse customResponse = new CustomResponse();
+
+        customResponse.setData(votanteService.getVotantes());
+        customResponse.setHttpCode(HttpStatus.OK);
+        customResponse.setCode(200);
+        customResponse.setMensaje("Todos los registros existentes:");
+
+        return customResponse;
+    }
+    
+      @GetMapping("/votante/{curp}")
+    public CustomResponse getCredencial(@PathVariable String curp) {
+        CustomResponse customResponse = new CustomResponse();
+
+        customResponse.setData(votanteService.getVotante(curp));
+        customResponse.setHttpCode(HttpStatus.OK);
+        customResponse.setCode(200);
+        customResponse.setMensaje("Exitoso: " + curp);
+        return customResponse;
+    }
+  
+
+  
 }

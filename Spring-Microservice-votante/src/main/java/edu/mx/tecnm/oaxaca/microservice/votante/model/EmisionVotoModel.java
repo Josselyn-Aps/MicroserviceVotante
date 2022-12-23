@@ -9,10 +9,14 @@ package edu.mx.tecnm.oaxaca.microservice.votante.model;
  *
  * @author macbookair
  */
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,12 +31,18 @@ public class EmisionVotoModel {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateTimeCreation;
 
+    @OneToOne
+    @JoinColumn(name = "curp")
+    @JsonBackReference
+    private VotanteModel votanteModel;
+    
     public EmisionVotoModel() {
     }
 
-    public EmisionVotoModel(String idEmisionVoto, Date dateTimeCreation) {
+    public EmisionVotoModel(String idEmisionVoto, Date dateTimeCreation, VotanteModel votanteModel) {
         this.idEmisionVoto = idEmisionVoto;
         this.dateTimeCreation = dateTimeCreation;
+        this.votanteModel = votanteModel;
     }
 
     public String getIdEmisionVoto() {
@@ -51,10 +61,19 @@ public class EmisionVotoModel {
         this.dateTimeCreation = dateTimeCreation;
     }
 
+    public VotanteModel getVotanteModel() {
+        return votanteModel;
+    }
+
+    public void setVotanteModel(VotanteModel votanteModel) {
+        this.votanteModel = votanteModel;
+    }
+
     @Override
     public String toString() {
-        return "EmisionVotoModel{" + "idEmisionVoto=" + idEmisionVoto + ", dateTimeCreation=" + dateTimeCreation + '}';
+        return "EmisionVotoModel{" + "idEmisionVoto=" + idEmisionVoto + ", dateTimeCreation=" + dateTimeCreation + ", votanteModel=" + votanteModel + '}';
     }
+
     
     
 

@@ -9,6 +9,7 @@ package edu.mx.tecnm.oaxaca.microservice.votante.model;
  *
  * @author macbookair
  */
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Date;
 import javax.persistence.*;
 @Entity
@@ -31,7 +32,10 @@ public class VotanteModel {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idDireccion")
     private DireccionModel direccionModel;
-
+    
+ 
+    
+        
     public VotanteModel() {
     }
 
