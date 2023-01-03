@@ -56,28 +56,6 @@ public class VotanteController {
          ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
         try {
-            
-            /*DireccionModel direccionModel = direccionService.getDireccion(votanteModel.getDireccionModel().getIdDireccion());
-            if (direccionModel == null) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found direccion with id = " + votanteModel.getDireccionModel().getIdDireccion(), 204));
-            }
-            
-             EmisionVotoModel emisionVotoModel = emisionVotoService.getEmisionVoto(votanteModel.getEmisionVotoModel().getIdEmisionVoto());
-            if (emisionVotoModel == null) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found emision voto with id = " + votanteModel.getEmisionVotoModel().getIdEmisionVoto(), 204));
-            }
-            
-              CredencialModel credencialModel = credencialService.getCredencial(votanteModel.getCredencialModel().getClaveElector());
-            if (credencialModel == null) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found credencial with id = " + votanteModel.getCredencialModel().getClaveElector(), 204));
-            }
-
-            votanteModel.setDireccionModel(direccionModel);
-            votanteModel.setEmisionVotoModel(emisionVotoModel);
-            votanteModel.setCredencialModel(credencialModel);*/
             votanteService.registrarVotantes(votanteModel);
             customResponse.setHttpCode(HttpStatus.CREATED);
             customResponse.setCode(201);
@@ -144,13 +122,15 @@ public class VotanteController {
 
         if (votanteService.getVotante(curp) == null) {
             customResponse.setHttpCode(HttpStatus.NOT_FOUND);
-            customResponse.setMensaje("No hay votante  con esta curo:= " + curp);
+            customResponse.setMensaje("No hay votante  con esta CURP:= " + curp);
 
         } else {
             votanteService.updateVotante(votanteModel, curp);
             customResponse.setHttpCode(HttpStatus.CREATED);
             customResponse.setCode(201);
             customResponse.setMensaje("Successful update");
+            customResponse.setData(votanteModel);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(customResponse);
         }
         return responseEntity;
 
