@@ -23,27 +23,14 @@ public class VotanteModel {
     private Date fechaNacimiento;
     private String entidad;
     private String genero;
+    private Boolean validacion;
     
-    
-    @ManyToOne
-    @JoinColumn(name = "idDireccion", unique=true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private DireccionModel direccionModel;
- 
-    @OneToOne
-    @JoinColumn(name = "idEmisionVoto")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private EmisionVotoModel emisionVotoModel;
-    
-    @OneToOne
-    @JoinColumn(name = "claveElector")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private CredencialModel credencialModel;
+   
 
     public VotanteModel() {
     }
 
-    public VotanteModel(String curp, String apellidoPVotante, String apellidoMVotante, String nombreVotante, String correoVotante, Integer telefonoVotante, Date fechaNacimiento, String entidad, String genero, DireccionModel direccionModel, EmisionVotoModel emisionVotoModel, CredencialModel credencialModel) {
+    public VotanteModel(String curp, String apellidoPVotante, String apellidoMVotante, String nombreVotante, String correoVotante, Integer telefonoVotante, Date fechaNacimiento, String entidad, String genero, Boolean validacion) {
         this.curp = curp;
         this.apellidoPVotante = apellidoPVotante;
         this.apellidoMVotante = apellidoMVotante;
@@ -53,11 +40,8 @@ public class VotanteModel {
         this.fechaNacimiento = fechaNacimiento;
         this.entidad = entidad;
         this.genero = genero;
-        this.direccionModel = direccionModel;
-        this.emisionVotoModel = emisionVotoModel;
-        this.credencialModel = credencialModel;
+        this.validacion = validacion;
     }
-
 
     public String getCurp() {
         return curp;
@@ -131,34 +115,20 @@ public class VotanteModel {
         this.genero = genero;
     }
 
-    public DireccionModel getDireccionModel() {
-        return direccionModel;
+    public Boolean getValidacion() {
+        return validacion;
     }
 
-    public void setDireccionModel(DireccionModel direccionModel) {
-        this.direccionModel = direccionModel;
-    }
-
-    public EmisionVotoModel getEmisionVotoModel() {
-        return emisionVotoModel;
-    }
-
-    public void setEmisionVotoModel(EmisionVotoModel emisionVotoModel) {
-        this.emisionVotoModel = emisionVotoModel;
-    }
-
-    public CredencialModel getCredencialModel() {
-        return credencialModel;
-    }
-
-    public void setCredencialModel(CredencialModel credencialModel) {
-        this.credencialModel = credencialModel;
+    public void setValidacion(Boolean validacion) {
+        this.validacion = validacion;
     }
 
     @Override
     public String toString() {
-        return "VotanteModel{" + "curp=" + curp + ", apellidoPVotante=" + apellidoPVotante + ", apellidoMVotante=" + apellidoMVotante + ", nombreVotante=" + nombreVotante + ", correoVotante=" + correoVotante + ", telefonoVotante=" + telefonoVotante + ", fechaNacimiento=" + fechaNacimiento + ", entidad=" + entidad + ", genero=" + genero + ", direccionModel=" + direccionModel + ", emisionVotoModel=" + emisionVotoModel + ", credencialModel=" + credencialModel + '}';
+        return "VotanteModel{" + "curp=" + curp + ", apellidoPVotante=" + apellidoPVotante + ", apellidoMVotante=" + apellidoMVotante + ", nombreVotante=" + nombreVotante + ", correoVotante=" + correoVotante + ", telefonoVotante=" + telefonoVotante + ", fechaNacimiento=" + fechaNacimiento + ", entidad=" + entidad + ", genero=" + genero + ", validacion=" + validacion + '}';
     }
+
+
 
 
 

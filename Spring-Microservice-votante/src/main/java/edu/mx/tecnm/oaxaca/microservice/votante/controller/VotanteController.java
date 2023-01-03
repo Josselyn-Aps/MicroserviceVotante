@@ -56,7 +56,8 @@ public class VotanteController {
          ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
         try {
-            DireccionModel direccionModel = direccionService.getDireccion(votanteModel.getDireccionModel().getIdDireccion());
+            
+            /*DireccionModel direccionModel = direccionService.getDireccion(votanteModel.getDireccionModel().getIdDireccion());
             if (direccionModel == null) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
                         new CustomResponse(HttpStatus.NO_CONTENT, "Not found direccion with id = " + votanteModel.getDireccionModel().getIdDireccion(), 204));
@@ -76,7 +77,7 @@ public class VotanteController {
 
             votanteModel.setDireccionModel(direccionModel);
             votanteModel.setEmisionVotoModel(emisionVotoModel);
-            votanteModel.setCredencialModel(credencialModel);
+            votanteModel.setCredencialModel(credencialModel);*/
             votanteService.registrarVotantes(votanteModel);
             customResponse.setHttpCode(HttpStatus.CREATED);
             customResponse.setCode(201);

@@ -2,6 +2,8 @@ package edu.mx.tecnm.oaxaca.microservice.votante.model;
 
 import com.sun.istack.NotNull;
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "direcciones")
@@ -30,10 +32,16 @@ public class DireccionModel {
     @Column(name = "municipio")
     private String municipio;
 
+    
+    @OneToOne
+    @JoinColumn(name = "curp")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private VotanteModel votanteModel;
+     
     public DireccionModel() {
     }
 
-    public DireccionModel(Integer idDireccion, String calle, Integer numero, String colonia, Integer cp, String estado, String municipio) {
+    public DireccionModel(Integer idDireccion, String calle, Integer numero, String colonia, Integer cp, String estado, String municipio, VotanteModel votanteModel) {
         this.idDireccion = idDireccion;
         this.calle = calle;
         this.numero = numero;
@@ -41,6 +49,7 @@ public class DireccionModel {
         this.cp = cp;
         this.estado = estado;
         this.municipio = municipio;
+        this.votanteModel = votanteModel;
     }
 
     public Integer getIdDireccion() {
@@ -99,17 +108,19 @@ public class DireccionModel {
         this.municipio = municipio;
     }
 
+    public VotanteModel getVotanteModel() {
+        return votanteModel;
+    }
+
+    public void setVotanteModel(VotanteModel votanteModel) {
+        this.votanteModel = votanteModel;
+    }
+
     @Override
     public String toString() {
-        return "DireccionModel{" + 
-                "idDireccion=" + idDireccion + 
-                ", calle=" + calle + 
-                ", numero=" + numero + 
-                ", colonia=" + colonia + 
-                ", cp=" + cp + 
-                ", estado=" + estado + 
-                ", municipio=" + municipio + '}';
+        return "DireccionModel{" + "idDireccion=" + idDireccion + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", cp=" + cp + ", estado=" + estado + ", municipio=" + municipio + ", votanteModel=" + votanteModel + '}';
     }
+    
     
     
     

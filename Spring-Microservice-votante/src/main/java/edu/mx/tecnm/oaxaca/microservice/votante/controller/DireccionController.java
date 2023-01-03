@@ -6,10 +6,13 @@
 package edu.mx.tecnm.oaxaca.microservice.votante.controller;
 
 import edu.mx.tecnm.oaxaca.microservice.votante.model.DireccionModel;
+import edu.mx.tecnm.oaxaca.microservice.votante.model.VotanteModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.DireccionService;
+import edu.mx.tecnm.oaxaca.microservice.votante.service.VotanteService;
 import edu.mx.tecnm.oaxaca.microservice.votante.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,17 +35,33 @@ public class DireccionController {
 
     @Autowired
     private DireccionService direccionService;
-
+    
+    @Autowired
+    private VotanteService votanteService;
     @PostMapping("/direccion")
-    public CustomResponse registroDirecciones(@RequestBody DireccionModel direccion) {
+    public ResponseEntity<Object> registroDirecciones(@RequestBody DireccionModel direccion) {
+       ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
-
-        direccionService.registrarDireccion(direccion);
-        customResponse.setHttpCode(HttpStatus.CREATED);
-        customResponse.setCode(201);
-        customResponse.setMensaje("Success");
-        customResponse.setData(direccion);
-        return customResponse;
+        try {
+            VotanteModel votanteModel = votanteService.getVotante(direccion.getVotanteModel().getCurp());
+            if (votanteModel == null) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found direccion with id = " + direccion.getVotanteModel().getCurp(), 204));
+            }
+            direccion.setVotanteModel(votanteModel);
+            direccionService.registrarDireccion(direccion);
+            customResponse.setHttpCode(HttpStatus.CREATED);
+            customResponse.setCode(201);
+            customResponse.setMensaje("Success");
+            customResponse.setData(direccion);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(customResponse);
+        } catch (Exception e) {
+            customResponse.setHttpCode(HttpStatus.UNPROCESSABLE_ENTITY);
+            customResponse.setCode(422);
+            customResponse.setMensaje("UNPROCESSABLE_ENTITY" + e);
+            responseEntity = ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customResponse);
+        }
+        return responseEntity;
     }
 
     @GetMapping("/direccion")

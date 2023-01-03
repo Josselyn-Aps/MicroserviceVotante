@@ -43,7 +43,12 @@ public class CredencialController {
         ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
         try {
-
+            VotanteModel votanteModel = votanteService.getVotante(credencialModel.getVotanteModel().getCurp());
+            if (votanteModel == null) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found direccion with id = " + credencialModel.getVotanteModel().getCurp(), 204));
+            }
+            credencialModel.setVotanteModel(votanteModel);
             credencialService.registrarCredencial(credencialModel);
             customResponse.setHttpCode(HttpStatus.CREATED);
             customResponse.setCode(201);
@@ -57,7 +62,7 @@ public class CredencialController {
         }
         return responseEntity;
     }
-    
+
 
     @GetMapping("/credencial")
     public CustomResponse getCredenciales() {

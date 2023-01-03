@@ -11,6 +11,8 @@ package edu.mx.tecnm.oaxaca.microservice.votante.model;
  */
 import com.sun.istack.NotNull;
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "credenciales")
@@ -39,11 +41,15 @@ public class CredencialModel {
     @Column(name = "foto")
     private String foto;
 
+    @OneToOne
+    @JoinColumn(name = "curp")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private VotanteModel votanteModel;
     
     public CredencialModel() {
     }
 
-    public CredencialModel(String claveElector, Integer seccion, Integer localidad, Integer emision, Integer vigencia, Integer añoRegistro, String foto) {
+    public CredencialModel(String claveElector, Integer seccion, Integer localidad, Integer emision, Integer vigencia, Integer añoRegistro, String foto, VotanteModel votanteModel) {
         this.claveElector = claveElector;
         this.seccion = seccion;
         this.localidad = localidad;
@@ -51,7 +57,10 @@ public class CredencialModel {
         this.vigencia = vigencia;
         this.añoRegistro = añoRegistro;
         this.foto = foto;
+        this.votanteModel = votanteModel;
     }
+
+    
 
     public String getClaveElector() {
         return claveElector;
@@ -109,9 +118,17 @@ public class CredencialModel {
         this.foto = foto;
     }
 
+    public VotanteModel getVotanteModel() {
+        return votanteModel;
+    }
+
+    public void setVotanteModel(VotanteModel votanteModel) {
+        this.votanteModel = votanteModel;
+    }
+
     @Override
     public String toString() {
-        return "CredencialModel{" + "claveElector=" + claveElector + ", seccion=" + seccion + ", localidad=" + localidad + ", emision=" + emision + ", vigencia=" + vigencia + ", a\u00f1oRegistro=" + añoRegistro + ", foto=" + foto + '}';
+        return "CredencialModel{" + "claveElector=" + claveElector + ", seccion=" + seccion + ", localidad=" + localidad + ", emision=" + emision + ", vigencia=" + vigencia + ", a\u00f1oRegistro=" + añoRegistro + ", foto=" + foto + ", votanteModel=" + votanteModel + '}';
     }
 
     

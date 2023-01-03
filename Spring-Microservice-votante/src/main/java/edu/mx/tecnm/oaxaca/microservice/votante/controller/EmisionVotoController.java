@@ -6,7 +6,9 @@
 package edu.mx.tecnm.oaxaca.microservice.votante.controller;
 
 import edu.mx.tecnm.oaxaca.microservice.votante.model.EmisionVotoModel;
+import edu.mx.tecnm.oaxaca.microservice.votante.model.VotanteModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.EmisionVotoService;
+import edu.mx.tecnm.oaxaca.microservice.votante.service.VotanteService;
 import edu.mx.tecnm.oaxaca.microservice.votante.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,12 +36,21 @@ public class EmisionVotoController {
 
     @Autowired
     private EmisionVotoService emisionVotoService;
+    
+     @Autowired
+    private VotanteService votanteService;
 
     @PostMapping("/emisionVoto")
     public ResponseEntity<Object> registerJourney(@RequestBody EmisionVotoModel emisionVotoModel) {
         ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
         try {
+            VotanteModel votanteModel = votanteService.getVotante(emisionVotoModel.getVotanteModel().getCurp());
+            if (votanteModel == null) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                        new CustomResponse(HttpStatus.NO_CONTENT, "Not found direccion with id = " + emisionVotoModel.getVotanteModel().getCurp(), 204));
+            }
+            emisionVotoModel.setVotanteModel(votanteModel);
             emisionVotoService.registrarEmisionVoto(emisionVotoModel);
             customResponse.setHttpCode(HttpStatus.CREATED);
             customResponse.setCode(201);
@@ -102,47 +113,4 @@ public class EmisionVotoController {
         }
     }
 
-    @PutMapping("/emisionVoto/{idEmisionVoto}")
-    public ResponseEntity<Object> updateEmisionVoto(@RequestBody EmisionVotoModel emisionVotoModel,
-            @PathVariable String idEmisionVoto) {
-        ResponseEntity<Object> responseEntity = null;
-        CustomResponse customResponse = new CustomResponse();
-        try {
-            if (emisionVotoService.getEmisionVoto(idEmisionVoto) == null) {
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT,
-                                "This acction can't execute, Not found idEmisionVoto with id = " + idEmisionVoto, 204));
-            }
-            emisionVotoService.updateEmisionVoto(emisionVotoModel, idEmisionVoto);
-            customResponse.setHttpCode(HttpStatus.OK);
-            customResponse.setCode(200);
-            customResponse.setMensaje("Update Success");
-            return ResponseEntity.status(HttpStatus.OK).body(customResponse);
-        } catch (Exception e) {
-            customResponse.setMensaje(e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customResponse);
-        }
-    }
-
-    @DeleteMapping("/emisionVoto/{idEmisionVoto}")
-    public ResponseEntity<Object> deleteEmisionVoto(@PathVariable String idEmisionVoto) {
-        ResponseEntity<Object> responseEntity = null;
-        CustomResponse customResponse = new CustomResponse();
-        try {
-            if (emisionVotoService.getEmisionVoto(idEmisionVoto) == null) {
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new CustomResponse(HttpStatus.NO_CONTENT,
-                                "This acction can't execute, Not found EmisionVoto with id = " + idEmisionVoto, 204));
-            }
-            emisionVotoService.deleteEmisionVoto(idEmisionVoto);
-            customResponse.setHttpCode(HttpStatus.OK);
-            customResponse.setCode(200);
-            customResponse.setMensaje("Delete Success");
-            return ResponseEntity.status(HttpStatus.OK).body(customResponse);
-        } catch (Exception e) {
-            customResponse.setMensaje(e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customResponse);
-        }
-
-    }
 }
