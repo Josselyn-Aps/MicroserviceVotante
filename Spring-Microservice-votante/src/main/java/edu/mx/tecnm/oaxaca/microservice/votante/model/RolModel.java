@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.mx.tecnm.oaxaca.microservice.votante.model;
 
 import com.sun.istack.NotNull;
@@ -20,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "rol")
 public class RolModel {
-    
+
     @Id
     @Column(name = "idRol")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,7 +48,13 @@ public class RolModel {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
+    @Override
+    public String toString() {
+        return "RolModel{" + 
+                "idRol=" + idRol + 
+                ", nombre=" + nombre + '}';
+    }
     
     
 }

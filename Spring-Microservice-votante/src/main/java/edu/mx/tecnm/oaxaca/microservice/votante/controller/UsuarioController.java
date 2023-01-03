@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.mx.tecnm.oaxaca.microservice.votante.controller;
 
-import edu.mx.tecnm.oaxaca.microservice.votante.model.CredencialModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.model.RolModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.model.UsuarioModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.RolService;
@@ -30,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/autenticacion/usuario")
-//@RequestMapping(path = "/productos")
 @CrossOrigin(origins = "*")
 public class UsuarioController {
 
@@ -65,8 +58,8 @@ public class UsuarioController {
         }
         return responseEntity;
     }
-    
-        @GetMapping("/viewUser")
+
+    @GetMapping("/viewUser")
     public CustomResponse getUsuarios() {
         CustomResponse customResponse = new CustomResponse();
 
@@ -77,8 +70,8 @@ public class UsuarioController {
 
         return customResponse;
     }
-    
-     @GetMapping("/viewUser/{idUsuario}")
+
+    @GetMapping("/viewUser/{idUsuario}")
     public CustomResponse getUsuario(@PathVariable int idUsuario) {
         CustomResponse customResponse = new CustomResponse();
 
@@ -89,7 +82,7 @@ public class UsuarioController {
         return customResponse;
     }
 
-       @PutMapping("/edit/{idUsuario}")
+    @PutMapping("/edit/{idUsuario}")
     public CustomResponse updateUsuario(@RequestBody UsuarioModel usuario, @PathVariable int idUsuario) {
         CustomResponse customResponse = new CustomResponse();
 
@@ -100,10 +93,9 @@ public class UsuarioController {
 
         return customResponse;
     }
-    
-    
+
     @DeleteMapping("/delete/{idUsuario}")
-    public ResponseEntity<Object> deleteUsuario(@PathVariable int idUsuario){
+    public ResponseEntity<Object> deleteUsuario(@PathVariable int idUsuario) {
         ResponseEntity<Object> responseEntity = null;
         CustomResponse customResponse = new CustomResponse();
         try {

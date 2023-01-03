@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.mx.tecnm.oaxaca.microservice.votante.model;
 
 import com.sun.istack.NotNull;
@@ -97,7 +92,12 @@ public class UsuarioModel {
 
     @Override
     public String toString() {
-        return "UsuarioModel{" + "idUsuario=" + idUsuario + ", correo=" + correo + ", password=" + password + ", estado=" + estado + ", rolModel=" + rolModel + '}';
+        return "UsuarioModel{" + 
+                "idUsuario=" + idUsuario + 
+                ", correo=" + correo + 
+                ", password=" + password + 
+                ", estado=" + estado + 
+                ", rolModel=" + rolModel + '}';
     }
     
     
