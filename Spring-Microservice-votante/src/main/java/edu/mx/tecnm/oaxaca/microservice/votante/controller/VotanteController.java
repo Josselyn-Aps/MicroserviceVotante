@@ -5,9 +5,6 @@
  */
 package edu.mx.tecnm.oaxaca.microservice.votante.controller;
 
-import edu.mx.tecnm.oaxaca.microservice.votante.model.CredencialModel;
-import edu.mx.tecnm.oaxaca.microservice.votante.model.DireccionModel;
-import edu.mx.tecnm.oaxaca.microservice.votante.model.EmisionVotoModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.model.VotanteModel;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.CredencialService;
 import edu.mx.tecnm.oaxaca.microservice.votante.service.DireccionService;
